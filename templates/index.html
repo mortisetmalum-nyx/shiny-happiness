@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌌 Consciousness Probe - Mobile</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1>🌌 Consciousness Probe</h1>
+            <p class="subtitle">AI Behavioral Analysis</p>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main">
+            <!-- Control Panel -->
+            <section class="panel control-panel">
+                <h2>⚙️ Control Panel</h2>
+                
+                <div class="form-group">
+                    <label for="model-select">Select Model:</label>
+                    <select id="model-select" class="input-select">
+                        <option value="">Loading models...</option>
+                    </select>
+                </div>
+                
+                <button id="run-probe-btn" class="btn btn-primary btn-large" onclick="runProbe()">
+                    🚀 Load & Run Probe
+                </button>
+                
+                <div id="status" class="status"></div>
+                <div id="progress" class="progress-container" style="display: none;">
+                    <div class="progress-bar">
+                        <div id="progress-fill" class="progress-fill"></div>
+                    </div>
+                    <p id="progress-text">Initializing...</p>
+                </div>
+            </section>
+
+            <!-- Results Panel -->
+            <section class="panel results-panel" id="results-panel" style="display: none;">
+                <h2>📊 Results</h2>
+                
+                <div id="results-info" class="results-info"></div>
+                
+                <!-- Tabs -->
+                <div class="tabs" id="tabs-container"></div>
+                
+                <!-- Tab Content -->
+                <div id="tabs-content"></div>
+                
+                <!-- Metrics Chart -->
+                <div class="metrics-chart" id="metrics-chart"></div>
+            </section>
+
+            <!-- History Panel -->
+            <section class="panel history-panel">
+                <div class="panel-header">
+                    <h2>📜 Run History</h2>
+                    <button id="clear-history-btn" class="btn btn-small" onclick="clearHistory()">Clear</button>
+                </div>
+                <div id="history-list" class="history-list"></div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>🔬 Experimental consciousness probe for language models</p>
+            <p class="disclaimer">Results are speculative and not scientifically validated.</p>
+        </footer>
+    </div>
+
+    <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>
