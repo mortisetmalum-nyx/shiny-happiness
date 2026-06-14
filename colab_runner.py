@@ -18,6 +18,15 @@ print("=" * 80)
 print("🌌 CONSCIOUSNESS PROBE - GOOGLE COLAB SETUP")
 print("=" * 80)
 
+# ========================== CONFIGURATION ==========================
+# 🔑 YOUR NGROK TOKEN - Change this for production!
+# Get your free token at: https://ngrok.com
+DEVELOPMENT_NGROK_TOKEN = "3F93sJfNWU4QawLeXxOxvRXrDzX_5XEoJxnikFksoS4WdaU6V"  # Development token
+PRODUCTION_NGROK_TOKEN = None   # Set your prod token here for production deployment
+
+# Determine which token to use
+NGROK_TOKEN = PRODUCTION_NGROK_TOKEN or DEVELOPMENT_NGROK_TOKEN
+
 # ========================== INSTALL DEPENDENCIES ==========================
 print("\n📦 Installing dependencies...")
 
@@ -52,16 +61,25 @@ except:
     install_package('pyngrok')
     from pyngrok import ngrok
 
-# Get ngrok token from environment or user
-ngrok_token = os.environ.get('NGROK_TOKEN')
+# Check for ngrok token
+ngrok_token = os.environ.get('NGROK_TOKEN') or NGROK_TOKEN
+
 if not ngrok_token:
-    print("\n⚠️  No NGROK_TOKEN found. Using local access only.")
-    print("    For external access, set NGROK_TOKEN as a secret in Colab.")
+    print("\n⚠️  No NGROK_TOKEN configured.")
+    print("    Options:")
+    print("    1. Set NGROK_TOKEN in this file (line 18-19)")
+    print("    2. Set NGROK_TOKEN environment variable in Colab")
+    print("    3. Add as Colab secret: https://colab.research.google.com/notebooks/snippets/accessing_google_drive.ipynb#scrollTo=TyJw8xa3ntwD")
+    print("\n    Using local access only.")
     use_ngrok = False
 else:
-    ngrok.set_auth_token(ngrok_token)
-    use_ngrok = True
-    print("✅ ngrok configured!")
+    try:
+        ngrok.set_auth_token(ngrok_token)
+        use_ngrok = True
+        print("✅ ngrok configured!")
+    except Exception as e:
+        print(f"⚠️  ngrok setup failed: {e}")
+        use_ngrok = False
 
 # ========================== DATACLASSES ==========================
 @dataclass
@@ -92,7 +110,8 @@ class UnifiedProbe:
 
     def _generate(self, prompt, max_tokens=120):
         """Generate text response from model."""
-        inputs = self.tokenizer(prompt, return_tensors="pt").to(self.device)\n        with torch.no_grad():
+        inputs = self.tokenizer(prompt, return_tensors="pt").to(self.device)
+        with torch.no_grad():
             outputs = self.model.generate(
                 **inputs, max_new_tokens=max_tokens, temperature=0.7,
                 do_sample=True, pad_token_id=self.tokenizer.eos_token_id
