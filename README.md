@@ -290,10 +290,10 @@ MIT License — See LICENSE file for details.
 If you use this tool in research or projects, cite as:
 
 ```bibtex
-@software{consciousness_probe_2024,
+@software{consciousness_probe_2026,
   title={Unified Consciousness Probe Dashboard},
   author={mortisetmalum-nyx},
-  year={2024},
+  year={2026},
   url={https://github.com/mortisetmalum-nyx/shiny-happiness}
 }
 ```
